@@ -1,0 +1,15 @@
+version: "3"
+networks:
+  gw_internal:
+    external: true
+
+services:
+  backend:
+    platform: linux/amd64
+    image: docker.io/brisouamaury/gateway-test-service
+    env_file:
+      - .env
+    ports:
+      - "${LISTEN_ADDR}:${LISTEN_PORT}:${LISTEN_PORT}"
+    networks:
+      - gw_internal
