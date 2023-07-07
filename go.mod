@@ -2,7 +2,7 @@ module github.com/amaurybrisou/gateway-test-service
 
 go 1.20
 
-require github.com/amaurybrisou/ablib v0.0.0-20230705081217-23072f8f74ac
+require github.com/amaurybrisou/ablib v0.0.0-20230705122649-6fac5196e7db
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

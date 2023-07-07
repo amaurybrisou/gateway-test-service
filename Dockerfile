@@ -9,7 +9,25 @@ RUN export "GOOS=$(echo "$TARGETPLATFORM" | cut -d/ -f1)"; \
     export CGO_ENABLED=0; \
     go build -o ./backend main.go
 
+FROM node:alpine AS frontend
+
+# Set the working directory
+WORKDIR /app
+
+RUN apk --no-cache add ca-certificates
+
+# Copy the React app source code to the container
+COPY ./front /app
+
+# Install dependencies and build the React app
+RUN npm install --production
+RUN npm run build
+
 FROM --platform=$TARGETPLATFORM scratch
 
 COPY --from=builder /app/backend /app/backend
+
+COPY --from=frontend /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=frontend /app/build /app/build
+
 CMD ["/app/backend"]

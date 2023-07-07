@@ -1,7 +1,7 @@
 version: "3"
-networks:
-  gw_internal:
-    external: true
+# networks:
+#   gw_internal:
+#     external: true
 
 services:
   backend:
@@ -10,6 +10,6 @@ services:
     env_file:
       - .env
     ports:
-      - "${LISTEN_ADDR}:${LISTEN_PORT}:${LISTEN_PORT}"
-    networks:
-      - gw_internal
+      - "${BACK_LISTEN_ADDR}:${BACK_LISTEN_PORT}:${BACK_LISTEN_PORT}"
+    # networks:
+    #   - gw_internal
