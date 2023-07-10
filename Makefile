@@ -2,7 +2,9 @@ ENV=.env
 
 GOBIN=$(shell pwd)/.bin
 DATA_DIR=$(shell pwd)/.data
-FRONT_PATH=front
+FRONT_PATH=$(shell pwd)/front
+COMPOSE_FILE=docker-compose.yml
+PROD_COMPOSE_FILE=docker-compose-prod.yml
 
 $(GOBIN):
 	mkdir -p $@
@@ -21,10 +23,6 @@ dev: $(GOBIN)/air $(DATA_DIR)
 		--tmp_dir .data \
 		--build.include_file ".env"
 
-.PHONY: dev-front
-dev-front:
-	cd $(FRONT_PATH) && npm run dev
-
 .bin:
 	mkdir -p $(shell pwd)/.bin
 
@@ -34,11 +32,15 @@ build: $(GOBIN)
 
 .PHONY: build-docker
 build-docker:
-	docker build --platform linux/amd64 -t "docker.io/brisouamaury/gateway-test-service:latest" --push .
+	NODE_ENV=production docker build --platform linux/amd64 -t "docker.io/brisouamaury/gateway-test-service:latest" --push .
 
 .PHONY: start
-start: pull
-	docker-compose --env-file $(ENV) -f docker-compose.yml up -d
+start:
+	docker-compose --env-file $(ENV) -f $(COMPOSE_FILE) up -d
+
+.PHONY: start-prod
+start-prod: pull
+	docker-compose --env-file $(ENV) -f $(PROD_COMPOSE_FILE) up -d
 
 .PHONY: stop
 stop:
@@ -61,7 +63,6 @@ logs:
 shell:
 	docker exec -it gateway-test-service_backend_1 /bin/bash
 
-
 .PHONY: lint
 lint:
 	golangci-lint run ./...
@@ -69,3 +70,18 @@ lint:
 .PHONY: test
 test:
 	@go test -count=1 -timeout 3m -v ./...
+
+#################################### FRONT ###########################################
+
+.PHONY: install-front
+install-front:
+	cd $(FRONT_PATH) && npm i
+
+.PHONY: lint-front
+lint-front: install-front
+	cd $(FRONT_PATH) && npm run lint
+
+
+.PHONY: dev-front
+dev-front: install-front
+	cd $(FRONT_PATH) && npm run dev

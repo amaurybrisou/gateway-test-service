@@ -2,7 +2,10 @@ module github.com/amaurybrisou/gateway-test-service
 
 go 1.20
 
-require github.com/amaurybrisou/ablib v0.0.0-20230705122649-6fac5196e7db
+require (
+	github.com/amaurybrisou/ablib v0.0.0-20230705122649-6fac5196e7db
+	github.com/rs/zerolog v1.29.1
+)
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -20,7 +23,6 @@ require (
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.11.0 // indirect
-	github.com/rs/zerolog v1.29.1 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/mod v0.11.0 // indirect
 	golang.org/x/net v0.11.0 // indirect

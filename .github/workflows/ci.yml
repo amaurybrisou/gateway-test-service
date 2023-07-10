@@ -41,6 +41,11 @@ jobs:
           # issue:   https://github.com/golangci/golangci-lint-action/issues/244
           # hotfix is to skip the pkg cache, which also requires an extended timeout:
           skip-pkg-cache: true
+  lint-front:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: make lint-front
 
   build:
     runs-on: ubuntu-latest
@@ -61,7 +66,7 @@ jobs:
       - run: make test
 
   deploy:
-    needs: [tidy, lint, build, test]
+    needs: [tidy, lint, lint-front, build, test]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:

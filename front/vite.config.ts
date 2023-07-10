@@ -6,6 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
+    base: '/hello',
     plugins: [react(), tsconfigPaths()],
     test: {
       globals: true,
@@ -18,7 +19,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: `http://${env.HTTP_SERVER_ADDR}:${env.HTTP_SERVER_PORT}`,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          rewrite: (path) => path.replace(/^\/api/, '/hello')
         }
       }
     }

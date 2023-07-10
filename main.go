@@ -25,7 +25,7 @@ func main() {
 	ctx := log.Logger.WithContext(context.Background())
 
 	router := http.NewServeMux()
-	router.Handle("/", http.FileServer(http.Dir(ablib.LookupEnv("FRONT_BUILD_PATH", "front/build"))))
+	router.Handle("/", http.FileServer(http.Dir(ablib.LookupEnv("FRONT_BUILD_PATH", "front/dist"))))
 	router.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
